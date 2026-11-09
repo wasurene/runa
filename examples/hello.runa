@@ -1,0 +1,9 @@
+func main() {
+    x := 42
+    y := 3.14
+    name := "Runa"
+    flag := x > 0 && !(name == "")
+    print("hello from", name, "x =", x, "y =", y, "flag =", flag)
+}
+
+main()

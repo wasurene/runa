@@ -1,0 +1,13 @@
+[package]
+name = "runa"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "runa"
+path = "src/lib.rs"
+
+[[bin]]
+name = "runa"
+path = "src/main.rs"
+
