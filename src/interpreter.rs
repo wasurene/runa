@@ -280,26 +280,32 @@ impl Interpreter {
             }
             Stmt::If { condition, then_branch, else_branch } => {
                 let cond = self.eval(condition, env.clone())?;
-                if let Value::Bool(true) = cond {
-                    let new_env = Environment::new_enclosed(env);
-                    for s in then_branch {
-                        match self.exec(s, new_env.clone())? {
-                            Flow::Return(v) => return Ok(Flow::Return(v)),
-                            Flow::Break => return Ok(Flow::Break),
-                            Flow::Continue => return Ok(Flow::Continue),
-                            _ => {}
+                match cond {
+                    Value::Bool(true) => {
+                        let new_env = Environment::new_enclosed(env.clone());
+                        for s in then_branch {
+                            match self.exec(s, new_env.clone())? {
+                                Flow::Return(v) => return Ok(Flow::Return(v)),
+                                Flow::Break => return Ok(Flow::Break),
+                                Flow::Continue => return Ok(Flow::Continue),
+                                _ => {}
+                            }
                         }
                     }
-                } else if let Some(else_b) = else_branch {
-                    let new_env = Environment::new_enclosed(env);
-                    for s in else_b {
-                        match self.exec(s, new_env.clone())? {
-                            Flow::Return(v) => return Ok(Flow::Return(v)),
-                            Flow::Break => return Ok(Flow::Break),
-                            Flow::Continue => return Ok(Flow::Continue),
-                            _ => {}
+                    Value::Bool(false) => {
+                        if let Some(else_b) = else_branch {
+                            let new_env = Environment::new_enclosed(env.clone());
+                            for s in else_b {
+                                match self.exec(s, new_env.clone())? {
+                                    Flow::Return(v) => return Ok(Flow::Return(v)),
+                                    Flow::Break => return Ok(Flow::Break),
+                                    Flow::Continue => return Ok(Flow::Continue),
+                                    _ => {}
+                                }
+                            }
                         }
                     }
+                    _ => return Err(Error::new("Условие if должно быть bool", Span::new(0, 0))),
                 }
             }
             Stmt::For { condition, body, .. } => {

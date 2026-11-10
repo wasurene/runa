@@ -1,0 +1,48 @@
+struct Person {
+    name,
+    age,
+}
+
+func (p Person) greet() {
+    print("Привет, меня зовут", p.name, "и мне", p.age, "лет")
+}
+
+func factorial(n) {
+    if n <= 1 {
+        return 1
+    }
+    return n * factorial(n - 1)
+}
+
+func main() {
+    print("--- Математика ---")
+    x := 10
+    y := 3
+    print("x + y =", x + y)
+    
+    print("--- Условия и логика ---")
+    flag := x > y && !(x == y)
+    if flag {
+        print("x больше y")
+    } else {
+        print("x меньше или равен y")
+    }
+    
+    print("--- Циклы ---")
+    sum := 0
+    i := 1
+    for i <= 3 {
+        sum = sum + i
+        i = i + 1
+    }
+    print("Сумма от 1 до 3 =", sum)
+    
+    print("--- Функции и рекурсия ---")
+    print("Факториал 5 =", factorial(5))
+    
+    print("--- Структуры и методы ---")
+    p := Person { name: "Алиса", age: 25 }
+    p.greet()
+}
+
+main()
